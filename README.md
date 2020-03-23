@@ -3,7 +3,8 @@ Reference-based QUantification Of gene-Dispensability
 ![alt text](https://github.com/KatharinaFrey/QUOD/blob/master/QUOD_logo.jpg)
 
 
-USAGE:\n
+USAGE:
+
 python3 QUOD.py
 
 --input_dir <FULL_PATH_TO_FOLDER_INPUT_BAM_FILES> (file names = sample names)
