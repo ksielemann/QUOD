@@ -19,4 +19,4 @@ python3 QUOD.py
 
 --visualize (optional argument)
 
-REQUIREMENTS: os, glob, sys, argparse, pandas, numpy (optional: matplotlib for visualization)
+REQUIREMENTS: pandas, numpy (optional: matplotlib for visualization)
