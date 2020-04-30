@@ -6,13 +6,20 @@ Reference-based QUantification Of gene-Dispensability
 ### Usage:
 
   python3 QUOD.py
-  --in STR*				full path to folder with input bam files
-  --gff STR* 			full path to reference annotation file
-  --out STR*			full path to output folder
+  
+  --in STR				full path to folder with input bam files
+  
+  --gff STR 			full path to reference annotation file
+  
+  --out STR			full path to output folder
 
+  
   Optional:
-  --min_cov_per_genome INT* 	default = 10
+  
+  --min_cov_per_genome INT 	default = 10
+  
   --bam_is_sorted 			prevents extra sorting of BAM files
+  
   --visualize
 
 
