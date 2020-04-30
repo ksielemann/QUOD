@@ -18,7 +18,7 @@ python3 QUOD.py
   
 Optional:
   
---min_cov_per_genome INT    default = 10
+--min_cov_per_genome INT      default = 10
   
 --bam_is_sorted               prevents extra sorting of BAM files
   
