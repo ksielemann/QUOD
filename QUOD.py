@@ -1,6 +1,6 @@
-### Katharina Frey ###
+### Katharina Sielemann ###
 ### kfrey@cebitec.uni-bielefeld.de ###
-### v1.0 ###
+### v2 ###
 
 #imports
 import os, glob, sys
@@ -10,7 +10,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 __usage__ = """
-python3 calculate_dispensability_score.py
+python3 QUOD.py
 --input_dir <FULL_PATH_TO_FOLDER_INPUT_BAM_FILES> (file names = sample names)
 --bam_is_sorted <PREVENTS_EXTRA_SORTING_OF_BAM_FILES> (optional argument)
 --gff <FULL_PATH_TO_REFERENCE_ANNOTATION_FILE>
@@ -21,10 +21,10 @@ REQUIREMENTS: os, glob, sys, argparse, pandas, numpy (optional: matplotlib for v
 			"""
 
 input_parameters = ArgumentParser()
-input_parameters.add_argument("--input_dir", "--input", "--in", "--i", dest="input_directory", required=True)
+input_parameters.add_argument("--input_dir", "--input", "--in", "--i", dest="input_directory")
 input_parameters.add_argument("--bam_is_sorted", action='store_true')
-input_parameters.add_argument("--gff", dest="gff_file", required=True)
-input_parameters.add_argument("--output_dir", "--output", "--out", "--o", dest="output_directory", required=True)
+input_parameters.add_argument("--gff", dest="gff_file")
+input_parameters.add_argument("--output_dir", "--output", "--out", "--o", dest="output_directory")
 input_parameters.add_argument("--min_cov_per_genome", dest="min_cov", default=10)
 input_parameters.add_argument("--visualize", action='store_true')
 
@@ -37,13 +37,16 @@ organelles = ["chrc", "chrm", "chloroplast", "mitochondria"]
 args = input_parameters.parse_args()
 if args.input_directory is None:
 	print("\n'--input_dir' was not set'")
-	print(__usage__)	
+	print(__usage__)
+	sys.exit(1)	
 elif args.output_directory is None:
 	print("\n'--output_dir' was not set'")
 	print(__usage__)
+	sys.exit(1)
 elif args.gff_file is None:
 	print("\n'--gff' was not set'")
-	print(__usage__)	
+	print(__usage__)
+	sys.exit(1)	
 else:
 	#calculating read coverage depth per position
 	print("\ncalculating read coverage depth per position...")
@@ -61,18 +64,18 @@ else:
 			if args.bam_is_sorted == True:
 				sorted_bam_file = bamfile
 			else:
-				sorted_bam_file =  bamfile + "_sorted.bam"
+				sorted_bam_file =  args.input_directory + name + "_sorted.bam"
 				cmd = samtools + " sort -m 5000000000 --threads 8 " + bamfile + " > " + sorted_bam_file
-				os.popen( cmd )
+				os.popen( cmd ).read()
 			os.system(bedtools + " -d -split -ibam " + sorted_bam_file + " > " + args.output_directory + "cov_files/" + name + ".cov")	
 		else:
 			print(name + ".cov already exists. Continue with further steps...")	
-
+		
 	#calculating read coverage depth per gene
 	print("\ncalculating read coverage depth per gene...")
 	if os.path.isdir(args.output_directory + "cov_rep_files/") == False:
 		os.makedirs(args.output_directory + "cov_rep_files/")
-	def get_gene_positions_form_gff( gff_file ):
+	def get_gene_positions_from_gff( gff_file ):
 		gene_positions = []
 		with open( gff_file, "r" ) as f:
 			line = f.readline()
@@ -116,7 +119,7 @@ else:
 			gene_positions[ idx ].update( { 'cov': np.mean( cov[ gene['chr'] ][ gene['start']:gene['end'] ] ) } )
 		return gene_positions
 		
-	gff_pos = get_gene_positions_form_gff(args.gff_file)
+	gff_pos = get_gene_positions_from_gff(args.gff_file)
 	cov_files = glob.glob(args.output_directory + "cov_files/*.cov")
 	for covfile in cov_files:
 		name = covfile[(len(args.output_directory + "cov_files/")):-4]
@@ -177,7 +180,7 @@ else:
 	N = len(list(cov_matrix)[1:])
 	cov_matrix = cov_matrix.set_index("gene")
 	cX = cov_matrix.div(cov_matrix.mean(axis="index"), axis="columns")
-	ds = (cX.sum(axis="columns")).div(N)
+	ds = 1/((cX.sum(axis="columns")).div(N))
 	ds.to_csv(args.output_directory + "gene_dispensability_scores.csv", header=False)
 
 if args.visualize == True:
@@ -185,37 +188,44 @@ if args.visualize == True:
 	
 	#histogram
 	plt.yscale("log")
-	plt.xlabel("dispensability score (ds)")
-	plt.ylabel("number of genes")
-	highscores_in_bin2 = []
+	plt.xscale("log")
+	plt.xlabel("dispensability score (ds)", fontsize=16)
+	plt.ylabel("number of genes", fontsize=16)
+	plt.tick_params(axis='both', which='both', labelsize=14)
+	plot_data = []
+	max_number = max([value for value in list(ds) if value != np.inf])
 	for number in sorted(list(ds)):
-		if number >= 2:
-			value = 2
-			highscores_in_bin2.append(value)
+		if number >= max_number:
+			value = max_number
+			plot_data.append(value)
 		else:
-			highscores_in_bin2.append(number)	
-	plt.xlim(xmin=0, xmax = 2)
+			plot_data.append(number)	
+	plt.xlim(xmin=min(plot_data), xmax = max_number)
 	cm = plt.cm.cool
-	n, bins, patches = plt.hist(highscores_in_bin2, bins = np.arange(min(highscores_in_bin2), max(highscores_in_bin2) + 0.02, 0.02))
+	n, bins, patches = plt.hist(plot_data, bins = np.logspace(np.log10(min(plot_data)), np.log10(max(plot_data)), num=150))
 	for i, p in enumerate(patches):
 		plt.setp(p, 'facecolor', cm((i)/(len(bins))))
 	plt.savefig(args.output_directory + "score_distribution_hist.png")
 	plt.close()
 	
-	#violin plot
-	def drawViolinPlot(xlabel, xticks, xticklabels, ylabel, bandwidth):
-		axis.set_xlabel(xlabel);
-		axis.set_xticks(xticks);
-		axis.set_xticklabels(xticklabels);
-		axis.set_ylabel(ylabel);
-		axis.violinplot(sequences, showmeans=True, showmedians=False, bw_method=bandwidth);
-	sequences = highscores_in_bin2
-	figure, axis = plt.subplots(1, 1);
-	plt.subplots_adjust(hspace=1);
-	bandwidth = None;
-	drawViolinPlot("all genes", np.arange(len(highscores_in_bin2)+1), ('all genes'), "dispensability score (ds)", bandwidth);
-	bandwidth = 0.3;
-	plt.savefig(args.output_directory + "score_distribution_violin.png")
+	#box plot
+	my_dict = {'all genes': plot_data}
+	medianprops = dict(linestyle='-', linewidth=1.5, color='royalblue')
+	meanprops = dict(linestyle='dashed', linewidth=1.5, color='royalblue')
+	plt.figure(figsize=(6,7))
+	data = [plot_data]
+	plt.xlim(xmin=min(plot_data), xmax = max_number)
+	plt.xscale("log")
+	plt.ylim(ymin=0.9, ymax=1.1)
+	x = plot_data
+	y = np.random.normal(1, 0.0125, len(x))
+	plt.scatter(x, y, color='grey', s=1, alpha=0.4)   
+	plt.boxplot(my_dict.values(), showmeans=True, meanline=True, showfliers=False, medianprops=medianprops, meanprops=meanprops, widths=0.125, vert=False)
+	plt.yticks([1],["all genes"])
+	plt.xlabel('dispensability score (ds)', fontsize=16)
+	plt.tick_params(axis='both', which='both', labelsize=14)
+	plt.plot([0.9,1.1],[np.mean(plot_data),np.mean(plot_data)], '--', linewidth=1, color='royalblue', alpha=0.5)
+	plt.savefig(args.output_directory + "score_distribution_boxplot.png")
 	plt.close()
 	
 print("\n---finished---")
