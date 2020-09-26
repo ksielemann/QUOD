@@ -18,6 +18,8 @@ Instead of classifying a gene as core or dispensable, QUOD assigns a dispensabil
 <img src="https://github.com/ksielemann/QUOD/blob/master/QUOD_concept.png" alt="drawing" width="750"/>
 </p>
 
+Illustration of the QUOD method using an artificial dataset. On the left side, genes are classified as ‘core’ (dark blue) or ‘dispensable’ (dark grey) according to a cutoff. On the right side, gene dispensability is quantified according to a dispensability score based on the normalised coverage in a read mapping. Coloring of genes (right side) indicates different dispensability scores. Extremely rare genes can be easily detected using QUOD.
+
 
 ### Usage:
 
