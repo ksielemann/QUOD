@@ -79,8 +79,8 @@ Optional:
 ~~~
 As output, a table including  
 (I) the dispensability score,  
-(II) the mean coverage of all investigated genome sequences,  
-(III) the mean coverage of the accessions with the highest and (IV) lowest 10 % of all coverage values, respectively,  
+(II) the average coverage of all investigated genome sequences,  
+(III) the average coverage of the accessions with the highest and (IV) lowest 10 % of all coverage values, respectively,  
 (V) the number of accessions with zero coverage and  
 (VI) the coverage for each accession, separately, is provided.  
 Further, the coverage distribution for each gene can be visualized in a box plot.  
