@@ -86,5 +86,16 @@ As output, a table including
 Further, the coverage distribution for each gene can be visualized in a box plot.  
 
 
+### Statistical analyses:
+The following scripts, performed to evaluate QUOD statistically, are provided:  
+
+(A) variance_in_repl_test.py          (Investigation of the variance within replicate datasets of the same accession in comparison to iteratively, randomly selected subsets of the whole dataset.)  
+(B) analyse_TE_genes_and_scores.py    (Welch's t-test to compare dispensability scores of TE genes and non-TE genes.)  
+(C) mixed_linear_effects.py           (Mixed linear modelling to compare the dispensability score with either gene length, exon number or distance to closest TE gene.)  
+(D) BUSCO_comparison.py               (Welch's t-test to compare dispensability scores of BUSCO genes and non-BUSCO genes. Levene's test to investigate the variation of the dispensability scores of BUSCO and non-BUSCO genes.)  
+
+More details for these analyses can be found in the Method section of our publication.  
+
+
 ### Reference:
 Frey K., Weisshaar B., Pucker B.; Reference-based QUantification Of gene Dispensability (QUOD); bioRxiv 2020.04.28.065714; doi: <https://doi.org/10.1101/2020.04.28.065714>
