@@ -50,7 +50,7 @@ Optional:
 
 
 #### Usage example (test set):
-The test dataset for QUOD comprises genomic reads of four randomly selected accessions of the *Arabidopsis thaliana* Norborg set. The reads were received from the Sequence Read Archive (SRA). To reduce the size of the files, the first MB of NdCChr1 was extracted. The BAM files are already sorted. All BAM files provided (SRR1945627.bam.gz,SRR1945757.bam.gz,SRR1945759.bam.gz,SRR1945819.bam.gz) should be used as input. The test dataset including all relevant files can be downloaded from 'PUB – Publications at Bielefeld University' (doi: <https://doi.org/10.4119/unibi/2946079>).    
+The test dataset for QUOD comprises genomic reads of four randomly selected accessions of the *Arabidopsis thaliana* Norborg set. The reads were received from the Sequence Read Archive (SRA) and mapped against the AthNd1_v2c reference genome sequence (Pucker B, et al. A chromosome-level sequence assembly reveals the structure of the Arabidopsis thaliana Nd-1 genome and its gene set. PloS one 14.5 (2019): e0216233.) using bowtie2 (Langmead B, Salzberg S. Fast gapped-read alignment with Bowtie 2. Nature Methods. 2012, 9:357-359). To reduce the size of the files, the first MB of NdCChr1 was extracted. All BAM files provided here are already sorted and should be used as input for QUOD. The test dataset including all relevant files can be downloaded from 'PUB – Publications at Bielefeld University' (doi: <https://doi.org/10.4119/unibi/2946079>).  
 
 ~~~
 python3 QUOD.py --in /input_bams_testset/ --bam_is_sorted --gff AthNd1_v2c_chr1_1mb.gff3 --out /output_QUOD/ --visualize
