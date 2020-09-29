@@ -1,3 +1,5 @@
+[![DOI](https://zenodo.org/badge/249387105.svg)](https://zenodo.org/badge/latestdoi/249387105)
+
 # QUOD
 
 
