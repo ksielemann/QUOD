@@ -25,7 +25,7 @@ Illustration of the QUOD method using an artificial dataset. On the left side, g
 
 ### Usage:
 
-Genomic reads of the investigated genomes are mapped to the corresponding reference genome sequence. The resulting BAM files of these mappings are then subjected to QUOD. In addition, the corresponding annotation file (in GFF format) has to be provided. '--out' is used to specify the output folder. 
+Genomic reads of the investigated genomes are mapped to the corresponding reference genome sequence. The resulting BAM files of these mappings are then subjected to QUOD. In addition, the corresponding annotation file (in GFF format) has to be provided. '--out' is used to specify the output folder. A gene-specific dispensability score for each gene based on normalised coverage in read mappings is calculated [1].
 
 Optionally, genomes with an average coverage below a given cutoff (default=10) can be discarded and excluded from further analyses using the '--min_cov_per_genome' parameter. The optional parameter '--bam_is_sorted' prevents extra sorting of the BAM files in case these files are already sorted. '--visualize' activates the visualization module which constructs a histogram and a box plot of the dispensability score distribution.  
 
@@ -52,7 +52,7 @@ Optional:
 
 
 #### Usage example (test set):
-The test dataset for QUOD comprises genomic reads of four randomly selected accessions of the *Arabidopsis thaliana* Norborg set. The reads were received from the Sequence Read Archive (SRA) and mapped against the AthNd1_v2c reference genome sequence (Pucker B, et al. A chromosome-level sequence assembly reveals the structure of the Arabidopsis thaliana Nd-1 genome and its gene set. PloS one 14.5 (2019): e0216233.) using bowtie2 (Langmead B, Salzberg S. Fast gapped-read alignment with Bowtie 2. Nature Methods. 2012, 9:357-359). To reduce the size of the files, the first MB of NdCChr1 was extracted. All BAM files provided here are already sorted and should be used as input for QUOD. The test dataset including all relevant files can be downloaded from 'PUB – Publications at Bielefeld University' (doi: <https://doi.org/10.4119/unibi/2946079>).  
+The test dataset for QUOD comprises genomic reads of four randomly selected accessions of the *Arabidopsis thaliana* Norborg set. The reads were received from the Sequence Read Archive (SRA) and mapped against the AthNd1_v2c reference genome sequence [2] using bowtie2 [3]. To reduce the size of the files, the first MB of NdCChr1 was extracted. All BAM files provided here are already sorted and should be used as input for QUOD. The test dataset including all relevant files can be downloaded from 'PUB – Publications at Bielefeld University' (doi: <https://doi.org/10.4119/unibi/2946079>).  
 
 ~~~
 python3 QUOD.py --in /input_bams_testset/ --bam_is_sorted --gff AthNd1_v2c_chr1_1mb.gff3 --out /output_QUOD/ --visualize
@@ -99,5 +99,13 @@ The following scripts, performed to evaluate QUOD statistically, are provided:
 More details for these analyses can be found in the Method section of our publication.  
 
 
-### Reference:
-Frey K., Weisshaar B., Pucker B.; Reference-based QUantification Of gene Dispensability (QUOD); bioRxiv 2020.04.28.065714; doi: <https://doi.org/10.1101/2020.04.28.065714>
+### How to cite:
+Frey K., Weisshaar B., Pucker B.; Reference-based QUantification Of gene Dispensability (QUOD); bioRxiv 2020.04.28.065714; doi: <https://doi.org/10.1101/2020.04.28.065714><br/><br/><br/>  
+
+
+##### References:  
+<sup>[1] Pucker B, Brockington SF. Genome-wide analyses supported by RNA-Seq reveal non-canonical splice sites in plant genomes. BMC Genomics 19, 980 (2018). <https://doi.org/10.1186/s12864-018-5360-z></sup>  
+
+<sup>[2] Pucker B, et al. A chromosome-level sequence assembly reveals the structure of the Arabidopsis thaliana Nd-1 genome and its gene set. PloS one 14.5 (2019): e0216233. <https://doi.org/10.1371/journal.pone.0216233></sup>  
+
+<sup>[3] Langmead B, Salzberg S. Fast gapped-read alignment with Bowtie 2. Nature Methods. 2012, 9:357-359. <https://doi.org/10.1038/nmeth.1923></sup>
