@@ -100,7 +100,7 @@ More details for these analyses can be found in the Method section of our public
 
 
 ### How to cite:
-Frey K., Weisshaar B., Pucker B.; Reference-based QUantification Of gene Dispensability (QUOD); bioRxiv 2020.04.28.065714; doi: <https://doi.org/10.1101/2020.04.28.065714><br/><br/><br/>  
+Sielemann, K., Weisshaar, B. & Pucker, B. Reference-based QUantification Of gene Dispensability (QUOD). Plant Methods 17, 18 (2021). <https://doi.org/10.1186/s13007-021-00718-5> <br/><br/><br/>  
 
 
 ##### References:  
